@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	
+	<script type="text/javascript">
+    
+	var map;  
+	var jacaranda;
+	var oviatt;  
+	var sagebrush;
+	var bayramian;
+	var lotB6;
+	var questionNum = 0;  
+	var numCorrect = 0;  
+	    
+	function init() {
+	
+    	var mapOptions = {
+		    zoom: 16,
+		    center: new google.maps.LatLng(34.241100, -118.5293698),  
+		    mapTypeId: google.maps.MapTypeId.SATELLITE,  
+			disableDefaultUI: true,  
+			draggable:false,
+			scrollwheel: false,
+			disableDoubleClickZoom: true
+		}
+		
+	  	map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions); 
+		 
+		var jacarandaBounds = new google.maps.LatLngBounds();
+		jacarandaBounds.extend(new google.maps.LatLng(34.2421381, -118.529553));
+		jacarandaBounds.extend(new google.maps.LatLng(34.2409859, -118.5277801));
+		
+		var oviattBounds =  new google.maps.LatLngBounds();
+		oviattBounds.extend(new google.maps.LatLng(34.2403823, -118.5300552));
+		oviattBounds.extend(new google.maps.LatLng(34.2396912, -118.5286821));
+		
+		var sagebrushBounds = new google.maps.LatLngBounds();
+		sagebrushBounds.extend(new google.maps.LatLng(34.242589686, -118.5287368));
+		sagebrushBounds.extend(new google.maps.LatLng(34.2424034, -118.52828621));
+		
+		var bayramianBounds = new google.maps.LatLngBounds();
+		bayramianBounds.extend(new google.maps.LatLng(34.2406916, -118.5314512));
+		bayramianBounds.extend(new google.maps.LatLng(34.2399022, -118.5301744));
+		
+		var lotB6Bounds = new google.maps.LatLngBounds();
+		lotB6Bounds.extend(new google.maps.LatLng(34.2445114, -118.53312492));
+		lotB6Bounds.extend(new google.maps.LatLng(34.2428263, -118.5317945));
+		
+		 
+		jacaranda = new google.maps.Rectangle( { 
+			bounds: jacarandaBounds,
+			 visible: false
+			});
+		jacaranda.setMap(map);
+						
+		oviatt = new google.maps.Rectangle( { 
+			bounds: oviattBounds,
+			visible: false
+			});
+		oviatt.setMap(map);
+		
+		sagebrush = new google.maps.Rectangle( { 
+			bounds: sagebrushBounds,
+			visible: false
+			});	
+		sagebrush.setMap(map);
+				
+		bayramian = new google.maps.Rectangle( { 
+			bounds: bayramianBounds,
+			visible: false
+			});
+		bayramian.setMap(map);
+		
+		lotB6 = new google.maps.Rectangle( { 
+			bounds: lotB6Bounds,
+			visible: false
+			});	
+		lotB6.setMap(map);
+		
+		quizFunc(0);  //begin the quiz
+	}
+	 
+	function quizFunc(questionNumber) {
+	
+		if (questionNumber == 0) {
+			google.maps.event.addListenerOnce(map, 'dblclick', function (e) {doubleClicked(e, jacaranda)});
+			$("#question").text("Q1: Double click on Jacaranda Hall");
+		}
+		else if (questionNumber == 1) {
+			google.maps.event.addListenerOnce(map, 'dblclick', function (e) {doubleClicked(e, oviatt)});
+			$("#question").text("Q2: Double click on Oviatt Library");
+		}
+		else if (questionNumber == 2) {
+			google.maps.event.addListenerOnce(map, 'dblclick', function (e) {doubleClicked(e, sagebrush)});
+			$("#question").text("Q3: Double click on Sagebrush Hall");
+		}
+		else if (questionNumber == 3) {
+			google.maps.event.addListenerOnce(map, 'dblclick', function (e) {doubleClicked(e, bayramian)});
+			$("#question").text("Q4: Double click on Bayramian Hall");
+		}
+		else if (questionNumber == 4) {
+			google.maps.event.addListenerOnce(map, 'dblclick', function (e) {doubleClicked(e, lotB6)});
+			$("#question").text("Q5: Double click on lot B6");
+		}
+		else { // quiz complete, animate 		
+			$("#animation").text(numCorrect +  "/5 questions correct.");
+			$("#animation").animate({bottom:'295px'}, 2500);
+		}		
+	}
+	
+	function doubleClicked(e, location)
+	{
+		if (location.getBounds().contains(e.latLng)) {	 //create green square, update result	
+			location.setVisible();
+			location.setOptions({strokeColor:"#2AFF00"});
+			$("#result").text("Correct!");
+			numCorrect++;
+		}
+		else {  //create red square, update result	
+			location.setVisible();
+			location.setOptions({strokeColor:"#FF011E"});
+			$("#result").text("Incorrect!");
+		}
+		
+		questionNum++; 
+		quizFunc(questionNum); 
+	}
+		
+	window.addEventListener("load", init, false); 
+	
+	</script>
+ 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Foodle CSUN!</title>
+
+	<link rel="stylesheet" type="text/css" href="foodle_css.css">
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/3-col-portfolio.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"><big><strong>Foodle</strong></big></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#restaurants page">Map</a>
+                    </li>
+                    <li>
+                        <a href="hours.html">Hours</a>
+                    </li>
+                    <li>
+                        <a href="http://www.csun.edu/sites/default/files/healthy-dining-guide.pdf">Healthy Dining Options</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+ <div class="row">
+            <div class="col-lg-12">
+			<div class = "inline" id="map_canvas"></div>
+			<div class = "inline" id="quiz">
+			<p id="question"></p>
+			<p id="result"></p>
+			<div id="animation"></div>
+	</div>
+	    </div>
+        </div>
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                     <strong> </strong> 
+                </h1>
+            </div>
+        </div>
+        <!-- /.row -->
+		<div class="row">
+			<div class="col-md-4";">View campus map
+				<br>
+					<img class="media-image" 
+					alt="map pic" src="http://www.csun.edu/sites/default/files/Picture1_1.pngxxxxx" 
+					border="0" typeof="foaf:Image">
+					<br><br>
+			</div>
+		 </div>
+	
+	
+	
+		<!-- Page Header -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="top-map">Page Heading
+                    <small>click on the map</small>
+                </h1>
+            </div>
+        </div>
+        <!-- /.row -->
+		
+
+        <!-- Projects Row -->
+        <div class="row">
+            <div class="col-md-4 portfolio-item">
+                <a href="#">
+                    <img class="img-responsive" src="img/bamboo1_0.jpg" alt="bamboo">
+                </a>
+                <h3>
+                    <a href="#">Project Name</a>
+                </h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            </div>
+            <div class="col-md-4 portfolio-item">
+                <a href="#">
+                    <img class="img-responsive" src="img/checkrs1.jpg" alt="checkers">
+                </a>
+                <h3>
+                    <a href="#">Project Name</a>
+                </h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            </div>
+            <div class="col-md-4 portfolio-item">
+                <a href="#">
+                    <img class="img-responsive" src="img/Cilantros_0.jpg" alt="cilantros">
+                </a>
+                <h3>
+                    <a href="#">Project Name</a>
+                </h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Projects Row -->
+        <div class="row">
+            <div class="col-md-4 portfolio-item">
+                <a href="#">
+                    <img class="img-responsive" src="img/El_Pollo_Loco.gif" alt="el pollo loco">
+                </a>
+                <h3>
+                    <a href="#">Project Name</a>
+                </h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            </div>
+            <div class="col-md-4 portfolio-item">
+                <a href="#">
+                    <img class="img-responsive" src="img/geronimos300px.jpg" alt="geronimos">
+                </a>
+                <h3>
+                    <a href="#">Project Name</a>
+                </h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            </div>
+            <div class="col-md-4 portfolio-item">
+                <a href="#">
+                    <img class="img-responsive" src="img/juiceitup.png" alt="juice it up">
+                </a>
+                <h3>
+                    <a href="#">Project Name</a>
+                </h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            </div>
+        </div>
+
+        <!-- Projects Row -->
+        <div class="row">
+            <div class="col-md-4 portfolio-item">
+                <a href="#">
+                    <img class="img-responsive" src="img/logo_burger-king.jpg" alt="burger king">
+                </a>
+                <h3>
+                    <a href="#">Project Name</a>
+                </h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            </div>
+            <div class="col-md-4 portfolio-item">
+                <a href="#">
+                    <img class="img-responsive" src="img/logo_freudian-sip-large.jpg" alt="freudian sip">
+                </a>
+                <h3>
+                    <a href="#">Project Name</a>
+                </h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            </div>
+            <div class="col-md-4 portfolio-item">
+                <a href="#">
+                    <img class="img-responsive" src="img/logo_grill-greens.jpg" alt="grill greens">
+                </a>
+                <h3>
+                    <a href="#">Project Name</a>
+                </h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Pagination -->
+        <div class="row text-center">
+            <div class="col-lg-12">
+                <ul class="pagination">
+                    <li>
+                        <a href="#">&laquo;</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">1</a>
+                    </li>
+                    <li>
+                        <a href="#">2</a>
+                    </li>
+                    <li>
+                        <a href="#">&raquo;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Foodle 2015</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
+
